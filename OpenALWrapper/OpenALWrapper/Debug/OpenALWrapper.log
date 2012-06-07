@@ -1,0 +1,6 @@
+﻿  sound.cpp
+c:\users\probook\desktop\master\audio programming\openal-wrapper\openal-wrapper\openalwrapper\openalwrapper\sound.cpp(59): warning C4996: 'alutLoadWAVFile': è stato dichiarato obsoleto
+          c:\program files\openal 1.1 sdk\freealut\include\al\alut.h(113): vedere la dichiarazione di 'alutLoadWAVFile'
+c:\users\probook\desktop\master\audio programming\openal-wrapper\openal-wrapper\openalwrapper\openalwrapper\sound.cpp(61): warning C4996: 'alutUnloadWAV': è stato dichiarato obsoleto
+          c:\program files\openal 1.1 sdk\freealut\include\al\alut.h(116): vedere la dichiarazione di 'alutUnloadWAV'
+  OpenALWrapper.vcxproj -> C:\Users\PROBOOK\Desktop\MASTER\Audio Programming\openal-wrapper\openal-wrapper\OpenALWrapper\Debug\OpenALWrapper.exe
