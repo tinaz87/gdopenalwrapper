@@ -38,7 +38,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	short resVolume = VkKeyScanExW('t', hkl );
 	short resPitch = VkKeyScanExW('y', hkl );
 
-	sound->LoadSound("../Wavs/MusicMono.wav");
+	sound->LoadSound("../Wavs/Bee.wav");
 
 	sound->LoopSound(true);
 
