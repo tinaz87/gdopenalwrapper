@@ -22,18 +22,47 @@ public:
 
 	void LoadSound(char* filename);
 
-	void PlaySound();
-	void StopSound();
-	void PauseSound();
-	void ResumeSound();
+	void Play();
+	void Stop();
+	void Pause();
+	void Resume();
 
-	void UpdateSound(float time);
+	void Update(const float time);
 
-	void SetSourcePosition(float x,float y,float z);
-	void SetSourceVelocity(float x,float y,float z);
-	void SetListenerPosition(float x,float y,float z);
+	void SetSourcePosition(const float x,const float y,const float z);
+	void TranslateSourcePosition(const float x,const float y,const float z);
+
+	void SetSourceVelocity(const float x,const float y,const float z);
+
+	// increase/decrease source velocity
+	void ChangeSourceVelocity(const float x,const float y,const float z);
+
+	void SetListenerPosition(const float x,const float y,const float z);
+	void TranslateListenerPosition(const float x,const float y,const float z);
+
+	void SetVolume(const float ivolume = 1.0f);
+	void IncreaseVolume();
+	void DecreaseVolume();
+
+	void IncreasePitch();
+	void DecreasePitch();
+
+	void ResetPitch();
+	void ResetVolume();
+
+	void SetPitch(const float ipitch = 1.0f);
+
+	void LoopSound(const bool iloop);
+
+	const bool inLoop()const;
+
+	bool isStopped() const;
+	bool isPlaying() const;
+	bool isPaused() const;
 
 private:
+
+	const ALint getSourceState() const;
 
 	// Listener
 	ALfloat	listenerPos[3];
