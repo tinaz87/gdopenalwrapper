@@ -3,7 +3,7 @@
 
 
 
-Sound::Sound(){
+Sound::Sound():loop(false),data(NULL){
 	
 	// Initialize OpenAL and clear the error bit.
 
@@ -38,11 +38,6 @@ Sound::Sound(){
 
 	alGetError(); // clear any error messages
 
-	
-	
-
-
-
 }
 
 Sound::~Sound(){
@@ -65,6 +60,24 @@ Sound::~Sound(){
 	alcCloseDevice(Device);
 
 }
+
+bool Sound::isStopped()const{
+
+	return getSourceState() == AL_STOPPED;
+}
+
+
+bool Sound::isPlaying()const{
+	
+	return  getSourceState() == AL_PLAYING;
+}
+
+bool Sound::isPaused()const{
+
+
+	return getSourceState() == AL_PAUSED;
+}
+
 
 
 void Sound::LoadSound(char* filename){
@@ -105,22 +118,138 @@ void Sound::LoadSound(char* filename){
 
 }
 
-void Sound::UpdateSound(float time){
+void Sound::Update(const float time){
 
 	
 	
 
 }
 
-void Sound::SetListenerPosition(float x,float y,float z){
+
+void Sound::ResetPitch(){
+
+	alSourcef (Source, AL_PITCH,    1.0      );
+	
+}
+
+void Sound::ResetVolume(){
+
+	alSourcef (Source, AL_GAIN,     1.0      );
+}
+void Sound::IncreasePitch(){
+
+	float pitch;
+
+	alGetSourcef(Source,AL_PITCH,&pitch);
+
+	pitch = pitch + 0.000001f;
+	if (pitch > 2.0f)
+	{
+		pitch =2.0f;
+	}
+
+
+	alSourcef (Source, AL_PITCH,     pitch      );
+
+}
+
+void Sound::DecreasePitch(){
+
+	float pitch;
+
+	alGetSourcef(Source,AL_PITCH,&pitch);
+
+	pitch = pitch - 0.000001f;
+	if (pitch < 0.5f)
+	{
+		pitch =0.5f;
+	}
+
+	alSourcef (Source, AL_PITCH,     pitch    );
+
+}
+
+void Sound::IncreaseVolume(){
+
+	float volume;
+
+	alGetSourcef(Source,AL_GAIN,&volume);
+
+	volume = volume + 0.000001f;
+	if (volume > 1.0f)
+	{
+		volume =1.0f;
+	}
+
+
+	alSourcef (Source, AL_GAIN,     volume      );
+
+}
+
+void Sound::DecreaseVolume(){
+
+	float volume;
+
+	alGetSourcef(Source,AL_GAIN,&volume);
+
+	volume = volume - 0.000001f;
+	if (volume < 0.0f)
+	{
+		volume = 0.0f;
+	}
+
+
+
+	alSourcef (Source, AL_GAIN,     volume    );
+
+}
+
+void Sound::SetVolume(const float ivolume /* = 1.0f */){
+
+	alSourcef (Source, AL_GAIN,     ivolume      );
+
+}
+
+void Sound::SetPitch(const float ipitch /* = 1.0f */){
+
+	alSourcef (Source, AL_PITCH,    ipitch      );
+
+}
+
+void Sound::LoopSound(const bool iloop){
+
+	loop = iloop;
+	alSourcei (Source, AL_LOOPING,  iloop     );
+
+}
+
+const bool Sound::inLoop()const{
+
+	return loop;
+
+}
+
+void Sound::SetListenerPosition(const float x,const float y,const float z){
 
 	listenerPos[0] = x;
 	listenerPos[1] = y;
 	listenerPos[2] = z;
+
+	alListenerfv(AL_POSITION,listenerPos);
+
 }
 
+void Sound::TranslateListenerPosition(const float x,const float y,const float z){
 
-void Sound::SetSourcePosition(float x,float y,float z){
+	listenerPos[0] += x;
+	listenerPos[1] += y;
+	listenerPos[2] += z;
+
+	alListenerfv(AL_POSITION,listenerPos);
+
+}
+
+void Sound::SetSourcePosition(const float x,const float y,const float z){
 
 	sourcePos[0] = x;
 	sourcePos[1] = y;
@@ -129,8 +258,18 @@ void Sound::SetSourcePosition(float x,float y,float z){
 	alSourcefv(Source, AL_POSITION, sourcePos);
 }
 
-void Sound::SetSourceVelocity(float x,float y,float z){
 
+void Sound::TranslateSourcePosition(const float x,const float y,const float z){
+
+	sourcePos[0] += x;
+	sourcePos[1] += y;
+	sourcePos[2] += z;
+
+	alSourcefv(Source, AL_POSITION, sourcePos);
+
+}
+
+void Sound::SetSourceVelocity(const float x,const float y,const float z){
 
 	sourceVel[0] = x;
 	sourceVel[1] = y;
@@ -139,26 +278,45 @@ void Sound::SetSourceVelocity(float x,float y,float z){
 	alSourcefv(Source, AL_VELOCITY, sourceVel);
 }
 
+void Sound::ChangeSourceVelocity(const float x,const float y,const float z){
 
-void Sound::PlaySound(){
+	sourceVel[0] += x;
+	sourceVel[1] += y;
+	sourceVel[2] += z;
 
+	alSourcefv(Source, AL_VELOCITY, sourceVel);
+
+
+}
+void Sound::Play(){
+
+	
 	alSourcePlay(Source);
 
 }
 
-void Sound::StopSound(){
+void Sound::Stop(){
 
 	alSourceStop(Source);
 	alSourceRewind(Source);
 	
 }
 
-void Sound::PauseSound(){
+void Sound::Pause(){
 
 	alSourcePause(Source);
 }
 
-void Sound::ResumeSound(){
+void Sound::Resume(){
 
-	Sound::PlaySound();
+	Sound::Play();
+}
+
+const ALint Sound::getSourceState()const{
+
+	ALint status;
+
+	alGetSourcei(Source,AL_SOURCE_STATE,&status);
+
+	return status;
 }
