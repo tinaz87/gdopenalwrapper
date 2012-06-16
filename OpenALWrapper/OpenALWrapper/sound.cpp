@@ -63,6 +63,7 @@ Sound::~Sound(){
 
 bool Sound::isStopped()const{
 
+	bool  a = getSourceState() == AL_STOPPED;
 	return getSourceState() == AL_STOPPED;
 }
 

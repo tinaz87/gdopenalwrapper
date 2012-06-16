@@ -13,6 +13,11 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	Sound* sound = new Sound();
 
+	wprintf( L"\n-Press ENTER to Play ");
+	wprintf( L"\n-Press CANC to Stop  ");
+	wprintf( L"\n-Press P to Pause  ");
+	wprintf( L"\n-Press R or ENTER  to Resume\n");
+
 	wprintf( L"\n-Press LEFT ARROW to move the listener to the left from the source ");
 	wprintf( L"\n-Press RIGHT ARROW to move the listener to the right from the source ");
 
@@ -65,7 +70,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			sound->Play();
 		}
 
-		if (GetAsyncKeyState(VK_DELETE) && !sound->isStopped() )
+		if (GetAsyncKeyState(VK_DELETE) && !sound->isStopped() && sound->isPlaying() )
 		{
 			wprintf( L"\nKey Stop pressed");
 			
